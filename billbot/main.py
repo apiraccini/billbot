@@ -1,4 +1,5 @@
 # main.py
+import sys
 from pathlib import Path
 from utils import get_index, get_query_engine
 
@@ -30,8 +31,12 @@ if __name__ == "__main__":
     raw_data_dir = Path('./data')
     persist_dir = Path('./storage')
 
-    # example query
-    query = "Fammi un resoconto delle ultime bollette che ho pagato per i vari servizi."
+    # command-line query argument
+    if len(sys.argv) > 1:
+        query = " ".join(sys.argv[1:])  # Join all command-line arguments into a single string
+    else:
+        print("Please provide a query.")
+        sys.exit(1)
 
     # execute the main function and print the response
     response = main(query=query, persist_dir=persist_dir, raw_data_dir=raw_data_dir)
