@@ -39,9 +39,9 @@ source venv/bin/activate  # for Linux/macOS
 pip install -r requirements.txt
 ```
 
-5. Create a data directory in the project root and place your input PDF files (e.g., bills, invoices) inside it.
+5. Create a ```data``` directory in the project root and place your input PDF files (e.g., bills, invoices) inside it.
 
-6. Create a .env file in the project root and add your LlamaCloud and OpenAI API keys:
+6. Create a ```.env``` file in the project root and add your LlamaCloud and OpenAI API keys:
 
 ## Usage
 
