@@ -1,24 +1,38 @@
+# main.py
 from pathlib import Path
-from utils import get_index
-from llama_index.core import Settings
-from llama_index.llms.openai import OpenAI
-from llama_index.embeddings.openai import OpenAIEmbedding
+from utils import get_index, get_query_engine
 
-# define llm settings
-embed_model=OpenAIEmbedding(model="text-embedding-3-small")
-llm = OpenAI(model="gpt-3.5-turbo-0125")
+def main(query: str, persist_dir: Path, raw_data_dir: Path) -> str:
+    """
+    Main function to query documents based on the input query.
 
-Settings.llm = llm
-Settings.embed_model = embed_model
+    args:
+        query (str): The query string.
+        persist_dir (Path): Directory for persisting the index.
+        raw_data_dir (Path): Directory containing raw data for indexing.
 
-raw_data_dir = Path('./data')
-persist_dir = Path('./storage')
+    returns:
+        str: The response to the query.
+    """
+    # retrieve or create the document index and get query engine
+    index = get_index(persist_dir=persist_dir, raw_data_dir=raw_data_dir)
+    query_engine = get_query_engine(index)
+    
+    # get response
+    response = query_engine.query(query)
+    
+    return response
 
-# example query
-query = "Fammi un resoconto della mia situazione per quanto rigurarda le bollette tari (totale pagato, periodo di riferimento)"
 
-index = get_index(persist_dir=persist_dir, raw_data_dir=raw_data_dir)
-query_engine = index.as_query_engine()
-response = query_engine.query(query)
+if __name__ == "__main__":
 
-print(response)
+    # directories
+    raw_data_dir = Path('./data')
+    persist_dir = Path('./storage')
+
+    # example query
+    query = "Fammi un resoconto delle ultime bollette che ho pagato per i vari servizi."
+
+    # execute the main function and print the response
+    response = main(query=query, persist_dir=persist_dir, raw_data_dir=raw_data_dir)
+    print(response)
